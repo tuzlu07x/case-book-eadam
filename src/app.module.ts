@@ -6,6 +6,8 @@ import { UserEntity } from './Entities/user.entity';
 import { BookEntity } from './Entities/book.entity';
 import { BookStoreEntity } from './Entities/bookstore.entity';
 import { BookBookStoreEntity } from './Entities/book.bookstore.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { BookBookStoreEntity } from './Entities/book.bookstore.entity';
       entities: [UserEntity, BookEntity, BookStoreEntity, BookBookStoreEntity],
       synchronize: true,
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
