@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from 'src/Entities/book.entity';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { FindAllQuery } from './interfaces/books.findAll.interface';
+import { PaginatedBooks } from './interfaces/books.paginated.interface';
 
 @Injectable()
 export class BooksService {
@@ -11,11 +12,12 @@ export class BooksService {
     private readonly bookRepository: Repository<BookEntity>,
   ) {}
 
-  async findAllBooks(query: FindAllQuery): Promise<[BookEntity[], number]> {
-    console.log(query);
+  async findAllBooks(query: FindAllQuery): Promise<PaginatedBooks> {
     const { take, skip, searchTitle } = this.query(query);
     const [books, total] = await this.bookRepository
       .createQueryBuilder('book')
+      .leftJoinAndSelect('book.bookBookstores', 'bookBookstores')
+      .leftJoinAndSelect('bookBookstores.bookstore', 'bookstore')
       .where('book.title ILIKE :searchTitle', {
         searchTitle: `%${searchTitle}%`,
       })
@@ -24,28 +26,43 @@ export class BooksService {
       .take(take)
       .getManyAndCount();
 
-    return [books, total];
+    const totalPages = Math.ceil(total / take);
+
+    return {
+      books,
+      total,
+      totalPages,
+      currentPage: skip || 1,
+    };
   }
 
   async findAllBookstoreBooks(
     query: FindAllQuery,
     bookStoreId: number,
-  ): Promise<BookEntity[]> {
+  ): Promise<PaginatedBooks> {
     const { take, skip, searchTitle } = this.query(query);
-
-    const books = await this.bookRepository
+    const [books, total] = await this.bookRepository
       .createQueryBuilder('book')
-      .innerJoinAndSelect('book.bookBookstores', 'bookBookstores')
-      .where('bookBookstores.bookstore_id = :bookStoreId', { bookStoreId })
+      .innerJoin('book.bookBookstores', 'bookBookstores')
+      .where('bookBookstores.bookstore.id = :bookStoreId', {
+        bookStoreId: bookStoreId['bookStoreId'],
+      })
       .andWhere('book.title ILIKE :searchTitle', {
         searchTitle: `%${searchTitle}%`,
       })
       .orderBy('book.title', 'DESC')
       .skip(skip)
       .take(take)
-      .getMany();
+      .getManyAndCount();
 
-    return books;
+    const totalPages = Math.ceil(total / take);
+
+    return {
+      books,
+      total,
+      totalPages,
+      currentPage: skip || 1,
+    };
   }
 
   query(query: FindAllQuery) {
