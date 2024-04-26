@@ -4,6 +4,7 @@ import { BookEntity } from 'src/Entities/book.entity';
 import { Repository } from 'typeorm';
 import { FindAllQuery } from './interfaces/books.findAll.interface';
 import { PaginatedBooksType } from './types/books.paginated.type';
+import { BookDto } from './dtos/books.dto';
 
 @Injectable()
 export class BooksService {
@@ -63,6 +64,16 @@ export class BooksService {
       totalPages,
       currentPage: skip || 1,
     };
+  }
+
+  async create(bookDto: BookDto): Promise<BookEntity> {
+    const { title, author, quantity } = bookDto;
+    const book = this.bookRepository.create({
+      title,
+      author,
+      quantity,
+    });
+    return await this.bookRepository.save(book);
   }
 
   query(query: FindAllQuery) {
