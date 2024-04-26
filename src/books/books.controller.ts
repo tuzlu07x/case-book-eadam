@@ -5,7 +5,7 @@ import { Roles } from 'src/roles/decorator';
 import { UserRole } from 'src/Enums/user.enum';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/roles/guard';
-import { PaginatedBooks } from './interfaces/books.paginated.interface';
+import { PaginatedBooksType } from './types/books.paginated.type';
 
 @Controller('books')
 @UseGuards(AuthGuard, RolesGuard)
@@ -13,12 +13,10 @@ export class BooksController {
   constructor(private bookService: BooksService) {}
 
   @Get('findAllBooks')
-  @Roles(UserRole.USER, UserRole.MANAGER, UserRole.ADMIN)
-  findAllBookList(@Query() query: FindAllQuery): Promise<PaginatedBooks> {
+  findAllBookList(@Query() query: FindAllQuery): Promise<PaginatedBooksType> {
     return this.bookService.findAllBooks(query);
   }
 
-  @Roles(UserRole.USER, UserRole.MANAGER, UserRole.ADMIN)
   @Get('findAllBookstoreBooks/:bookStoreId')
   findAllBookstoreBooksList(
     @Query() query: FindAllQuery,

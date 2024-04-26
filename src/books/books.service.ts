@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from 'src/Entities/book.entity';
 import { Repository } from 'typeorm';
 import { FindAllQuery } from './interfaces/books.findAll.interface';
-import { PaginatedBooks } from './interfaces/books.paginated.interface';
+import { PaginatedBooksType } from './types/books.paginated.type';
 
 @Injectable()
 export class BooksService {
@@ -12,7 +12,7 @@ export class BooksService {
     private readonly bookRepository: Repository<BookEntity>,
   ) {}
 
-  async findAllBooks(query: FindAllQuery): Promise<PaginatedBooks> {
+  async findAllBooks(query: FindAllQuery): Promise<PaginatedBooksType> {
     const { take, skip, searchTitle } = this.query(query);
     const [books, total] = await this.bookRepository
       .createQueryBuilder('book')
@@ -39,7 +39,7 @@ export class BooksService {
   async findAllBookstoreBooks(
     query: FindAllQuery,
     bookStoreId: number,
-  ): Promise<PaginatedBooks> {
+  ): Promise<PaginatedBooksType> {
     const { take, skip, searchTitle } = this.query(query);
     const [books, total] = await this.bookRepository
       .createQueryBuilder('book')

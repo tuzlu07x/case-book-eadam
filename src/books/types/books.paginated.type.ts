@@ -1,8 +1,8 @@
 import { BookEntity } from 'src/Entities/book.entity';
 
-export interface PaginatedBooks {
+export type PaginatedBooksType = {
   books: BookEntity[];
   total: number;
   totalPages: number;
   currentPage: number;
-}
+};
