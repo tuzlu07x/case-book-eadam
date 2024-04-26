@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindAllQuery } from 'src/books/interfaces/books.findAll.interface';
-import { BookStoreEntity } from 'src/Entities/bookstore.entity';
+import { BookStoreEntity } from 'src/entities/bookstore.entity';
 import { Repository } from 'typeorm';
 import { BookstorePaginate } from './types/bookstore.paginated.type';
 import { BookstoreDto } from './dtos/bookstore.dto';

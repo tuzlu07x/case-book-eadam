@@ -1,4 +1,4 @@
-import { BookStoreEntity } from 'src/Entities/bookstore.entity';
+import { BookStoreEntity } from 'src/entities/bookstore.entity';
 
 export type BookstorePaginate = {
   bookstores: BookStoreEntity[];

@@ -20,7 +20,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/roles/guard';
 import { PaginatedBooksType } from './types/books.paginated.type';
 import { BookDto } from './dtos/books.dto';
-import { BookEntity } from 'src/Entities/book.entity';
+import { BookEntity } from 'src/entities/book.entity';
 import { BookMessageType } from './types/books.message.type';
 import { BookUpdateDto } from './dtos/books.update.dto';
 
@@ -43,7 +43,7 @@ export class BooksController {
   }
 
   @Post('create/:bookStoreId')
-  @HttpCode(HttpStatus.ok)
+  @HttpCode(HttpStatus.OK)
   @Roles(UserRole.MANAGER, UserRole.ADMIN)
   async create(
     @Body(ValidationPipe) bookDto: BookDto,
@@ -53,7 +53,7 @@ export class BooksController {
   }
 
   @Put('updateQuantity/:id')
-  @HttpCode(HttpStatus.ok)
+  @HttpCode(HttpStatus.OK)
   @Roles(UserRole.ADMIN)
   async updateQuantity(
     @Param() id: number,
@@ -64,7 +64,7 @@ export class BooksController {
   }
 
   @Delete('delete/:id')
-  @HttpCode(HttpStatus.ok)
+  @HttpCode(HttpStatus.OK)
   @Roles(UserRole.ADMIN)
   async delete(@Param() id: number): Promise<BookMessageType> {
     const book = await this.bookService.delete(id);

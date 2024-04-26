@@ -35,7 +35,7 @@ export class BookstoreController {
 
   @Post('create')
   @Roles(UserRole.ADMIN)
-  @HttpCode(HttpStatus.ok)
+  @HttpCode(HttpStatus.OK)
   async create(@Body(ValidationPipe) bookstoreDto: BookstoreDto) {
     return await this.bookstoreService.create(bookstoreDto);
   }

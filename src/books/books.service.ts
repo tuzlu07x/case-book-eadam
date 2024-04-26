@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BookEntity } from 'src/Entities/book.entity';
+import { BookEntity } from 'src/entities/book.entity';
 import { Repository } from 'typeorm';
 import { FindAllQuery } from './interfaces/books.findAll.interface';
 import { PaginatedBooksType } from './types/books.paginated.type';
 import { BookDto } from './dtos/books.dto';
 import { BookUpdateDto } from './dtos/books.update.dto';
-import { BookStoreEntity } from 'src/Entities/bookstore.entity';
-import { BookBookStoreEntity } from 'src/Entities/book.bookstore.entity';
+import { BookStoreEntity } from 'src/entities/bookstore.entity';
+import { BookBookStoreEntity } from 'src/entities/book.bookstore.entity';
 
 @Injectable()
 export class BooksService {

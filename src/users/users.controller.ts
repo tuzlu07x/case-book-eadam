@@ -9,7 +9,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/roles/guard';
 import { UserCreateDto } from './dtos/users.create.dto';
 import { UsersService } from './users.service';
-import { UserEntity } from 'src/Entities/user.entity';
+import { UserEntity } from 'src/entities/user.entity';
 import { Roles } from 'src/roles/decorator';
 import { UserRole } from 'src/Enums/user.enum';
 

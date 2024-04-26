@@ -1,4 +1,4 @@
-import { BookEntity } from 'src/Entities/book.entity';
+import { BookEntity } from 'src/entities/book.entity';
 import { DeleteResult } from 'typeorm';
 
 export type BookMessageType = {

@@ -14,7 +14,7 @@ import { RegisterDto } from 'src/users/dtos/users.register.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.ok)
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body(ValidationPipe) signInDto: SignInDto) {
     return this.authService.signIn(signInDto.username, signInDto.password);
