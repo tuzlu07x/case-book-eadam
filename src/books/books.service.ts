@@ -6,12 +6,18 @@ import { FindAllQuery } from './interfaces/books.findAll.interface';
 import { PaginatedBooksType } from './types/books.paginated.type';
 import { BookDto } from './dtos/books.dto';
 import { BookUpdateDto } from './dtos/books.update.dto';
+import { BookStoreEntity } from 'src/Entities/bookstore.entity';
+import { BookBookStoreEntity } from 'src/Entities/book.bookstore.entity';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectRepository(BookEntity)
     private readonly bookRepository: Repository<BookEntity>,
+    @InjectRepository(BookStoreEntity)
+    private readonly bookStoreRepository: Repository<BookStoreEntity>,
+    @InjectRepository(BookBookStoreEntity)
+    private readonly bookBookStoreRepository: Repository<BookBookStoreEntity>,
   ) {}
 
   async findAllBooks(query: FindAllQuery): Promise<PaginatedBooksType> {
@@ -67,14 +73,28 @@ export class BooksService {
     };
   }
 
-  async create(bookDto: BookDto): Promise<BookEntity> {
+  async create(bookDto: BookDto, bookStoreId: number): Promise<BookEntity> {
     const { title, author, quantity } = bookDto;
     const book = this.bookRepository.create({
       title,
       author,
       quantity,
     });
-    return await this.bookRepository.save(book);
+    bookStoreId = bookStoreId['bookStoreId'];
+    const savedBook = await this.bookRepository.save(book);
+    const bookstore = await this.bookStoreRepository.findOneBy({
+      id: bookStoreId,
+    });
+
+    if (!bookstore) {
+      throw new Error(`Bookstore with id ${bookStoreId} not found`);
+    }
+    const bookBookstore = new BookBookStoreEntity();
+    bookBookstore.book = savedBook;
+    bookBookstore.bookstore = bookstore;
+    await this.bookBookStoreRepository.save(bookBookstore);
+
+    return savedBook;
   }
 
   async updateQuantity(

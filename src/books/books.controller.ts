@@ -42,11 +42,14 @@ export class BooksController {
     return this.bookService.findAllBookstoreBooks(query, bookStoreId);
   }
 
-  @Post('create')
+  @Post('create/:bookStoreId')
   @HttpCode(HttpStatus.ok)
   @Roles(UserRole.MANAGER, UserRole.ADMIN)
-  async create(@Body(ValidationPipe) bookDto: BookDto): Promise<BookEntity> {
-    return await this.bookService.create(bookDto);
+  async create(
+    @Body(ValidationPipe) bookDto: BookDto,
+    @Param() bookStoreId: number,
+  ): Promise<BookEntity> {
+    return await this.bookService.create(bookDto, bookStoreId);
   }
 
   @Put('updateQuantity/:id')
