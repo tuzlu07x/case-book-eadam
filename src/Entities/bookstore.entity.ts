@@ -6,10 +6,10 @@ export class BookStoreEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   name: string;
 
-  @Column({ unique: true, type: 'varchar', length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   location: string;
 
   @OneToMany(
