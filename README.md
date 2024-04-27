@@ -1,73 +1,122 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Getting Started
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Requirements
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Env File Configuration
 
-## Description
+```
+DB_HOST=postgres
+DB_PORT=5432
+DB_USERNAME=fatihtuzlu
+DB_PASSWORD=fatihtuzlu123
+DB_DATABASE=booking
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
 ```
 
-## Running the app
+- Docker
+- Docker Compose
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose up -d
 ```
 
-## Test
+- Postman Link
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+https://www.postman.com/dark-station-425448/workspace/e-adam-book/request/20110215-1c4d0651-210f-4324-83e3-0ccd27e6aba3
 ```
 
-## Support
+# Usage
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Listing Books
 
-## Stay in touch
+`GET /books/findAllBooks`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### Parameters
 
-## License
+- `page`: Optional, the number of the page to return (default: 1)
+- `take`: Optional, the number of items to show per page (default: 10)
+- `searchTitle`: Optional, a keyword to search titles
 
-Nest is [MIT licensed](LICENSE).
+#### Example Usage
+
+```bash
+curl -X GET "http://localhost:3000/books/findAllBooks?page=1&take=10&searchTitle=Harry%20Potter" -H "accept: application/json"
+```
+
+### Listing Books in a Bookstore
+
+`GET /books/findAllBookstoreBooks/:bookStoreId`
+
+#### Parameters
+
+- `page`: Optional, the number of the page to return (default: 1)
+- `take`: Optional, the number of items to show per page (default: 10)
+- `searchTitle`: Optional, a keyword to search titles
+
+#### Example Usage
+
+```bash
+curl -X GET "http://localhost:3000/books/findAllBookstoreBooks/1?page=1&take=10&searchTitle=Harry%20Potter" -H "accept: application/json"
+```
+
+### Creating a Book
+
+`POST /books/create/:bookStoreId`
+
+#### Parameters
+
+- `bookStoreId`: The ID of the bookstore to which the book will be added
+- `title`: The title of the book
+- `author`: The author of the book
+- `quantity`: The quantity of the book
+
+#### Example Usage
+
+```bash
+curl -X POST "http://localhost:3000/books/create/1" -H "accept: application/json" -H "Content-Type: application/json" -d '{"title":"Harry Potter","author":"J.K. Rowling","quantity":10}'
+```
+
+#### Updating Book Quantity
+
+`PUT /books/updateQuantity/:id`
+
+##### Parameters
+
+- `id`: The ID of the book to update
+- `quantity`: The new quantity of the book
+
+##### Example Usage
+
+```bash
+curl -X PUT "http://localhost:3000/books/updateQuantity/1" -H "accept: application/json" -H "Content-Type: application/json" -d '{"quantity":15}'
+```
+
+#### Deleting a Book
+
+`DELETE /books/delete/:id`
+
+##### Parameters
+
+`id`: The ID of the book to delete
+
+##### Example Usage
+
+```bash
+curl -X DELETE "http://localhost:3000/books/delete/1" -H "accept: application/json"
+```
+
+#### Listing Bookstores
+
+`GET /bookstores/list`
+
+##### Parameters
+
+`page`: Optional, the number of the page to return (default: 1)
+`take`: Optional, the number of items to show per page (default: 10)
+
+##### Example Usage
+
+```bash
+curl -X GET "http://localhost:3000/bookstores/list" -H "accept: application/json"
+```
