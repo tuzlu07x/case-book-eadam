@@ -15,11 +15,11 @@ import { BookstoreModule } from './bookstore/bookstore.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
-      port: 5432,
-      username: 'fatihtuzlu',
-      password: 'fatihtuzlu123',
-      database: 'booking',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       entities: [UserEntity, BookEntity, BookStoreEntity, BookBookStoreEntity],
       synchronize: true,
     }),
